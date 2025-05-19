@@ -18,8 +18,12 @@
             <h1>Non sai da dove partire per la tua salute? Raccontaci di cosa hai bisogno e ti aiuteremo a capire quali passi seguire.</h1>
             
             <div class="search-container">
-                <form id="search-form">
-                    <input type="text" id="search-input" placeholder="Descrivi il tuo problema di salute, un sintomo o cosa ti serve…">
+                <form id="search-form" name="health-query" method="POST" netlify netlify-honeypot="bot-field" data-netlify="true">
+                    <input type="hidden" name="form-name" value="health-query">
+                    <p class="hidden">
+                        <label>Non compilare questo campo se sei umano: <input name="bot-field" /></label>
+                    </p>
+                    <input type="text" id="search-input" name="query" placeholder="Descrivi il tuo problema di salute, un sintomo o cosa ti serve…" required>
                     <button type="submit">Cerca</button>
                 </form>
             </div>
@@ -47,8 +51,13 @@
                 
                 <div class="email-signup">
                     <h3>Vuoi ricevere aggiornamenti?</h3>
-                    <form id="email-form">
-                        <input type="email" id="email-input" placeholder="La tua email" required>
+                    <form id="email-form" name="email-subscription" method="POST" netlify netlify-honeypot="bot-field" data-netlify="true">
+                        <input type="hidden" name="form-name" value="email-subscription">
+                        <p class="hidden">
+                            <label>Non compilare questo campo se sei umano: <input name="bot-field" /></label>
+                        </p>
+                        <input type="text" id="query-saved" name="saved-query" class="hidden">
+                        <input type="email" id="email-input" name="email" placeholder="La tua email" required>
                         <button type="submit">Avvisami al lancio</button>
                     </form>
                     <p class="email-success hidden">Grazie! Ti terremo aggiornato.</p>
