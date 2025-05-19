@@ -66,10 +66,11 @@ main {
 }
 
 h1 {
-    font-size: 2rem;
+    font-size: 1.8rem;
     font-weight: 600;
     max-width: 800px;
     line-height: 1.4;
+    margin-bottom: 30px;
 }
 
 .search-container {
@@ -87,7 +88,7 @@ h1 {
     padding: 18px 25px;
     border: none;
     border-radius: 30px;
-    font-size: 1.1rem;
+    font-size: 1rem;
     background-color: var(--white);
     box-shadow: 0 5px 15px var(--shadow-color);
     transition: all 0.3s ease;
