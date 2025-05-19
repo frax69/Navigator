@@ -1,7 +1,14 @@
 [build]
   publish = "/"
-  command = "echo 'No build step needed - static site'"
+  command = "# No build command"
 
+# Handle form submissions
+[[redirects]]
+  from = "/success"
+  to = "/index.html"
+  status = 200
+
+# SPA redirect - make sure this ALWAYS comes last
 [[redirects]]
   from = "/*"
   to = "/index.html"

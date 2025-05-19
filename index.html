@@ -18,8 +18,9 @@
             <h1>Non sai da dove partire per la tua salute? Raccontaci di cosa hai bisogno e ti aiuteremo a capire quali passi seguire.</h1>
             
             <div class="search-container">
-                <form id="search-form" action="/" name="health-query" method="POST" data-netlify="true">
+                <form id="search-form" action="/success" name="health-query" method="POST" data-netlify="true">
                     <input type="hidden" name="form-name" value="health-query">
+                    <input type="hidden" name="success_url" value="/success?form=health-query">
                     <input type="text" id="search-input" name="query" placeholder="Descrivi il tuo problema di salute, un sintomo o cosa ti serve…" required>
                     <button type="submit">Cerca</button>
                 </form>
@@ -48,8 +49,9 @@
                 
                 <div class="email-signup">
                     <h3>Vuoi ricevere aggiornamenti?</h3>
-                    <form id="email-form" action="/" name="email-subscription" method="POST" data-netlify="true">
+                    <form id="email-form" action="/success" name="email-subscription" method="POST" data-netlify="true">
                         <input type="hidden" name="form-name" value="email-subscription">
+                        <input type="hidden" name="success_url" value="/success?form=email-subscription">
                         <input type="hidden" id="query-saved" name="saved-query">
                         <input type="email" id="email-input" name="email" placeholder="La tua email" required>
                         <button type="submit">Avvisami al lancio</button>
