@@ -1,58 +1,79 @@
 document.addEventListener('DOMContentLoaded', function() {
     // Get DOM elements (with fallbacks in case elements aren't found)
     const searchForm = document.getElementById('search-form');
+    const searchBtn = document.getElementById('search-btn');
+    const skipEmailBtn = document.getElementById('skip-email-btn');
     const thankYouSection = document.getElementById('thank-you');
     const messageContainer = document.querySelector('.message-container');
     const emailForm = document.getElementById('email-form');
     const emailSuccess = document.querySelector('.email-success');
     
-    // Basic form submit handling without complex Netlify handling
-    if (searchForm) {
-        searchForm.addEventListener('submit', function(e) {
-            // Let the form submit normally to Netlify
+    // Store the search query when button is clicked and show email form
+    if (searchBtn) {
+        searchBtn.addEventListener('click', function() {
             const searchInput = document.getElementById('search-input');
             
-            if (searchInput && searchInput.value.trim() === '') {
-                e.preventDefault(); // Prevent empty submissions
-            } else if (thankYouSection && messageContainer) {
-                // Just store the query in localStorage for potential future use
+            if (searchInput && searchInput.value.trim() !== '') {
+                const query = searchInput.value.trim();
+                
+                // Store the query for later use
                 try {
-                    localStorage.setItem('lastHealthQuery', searchInput.value.trim());
+                    localStorage.setItem('lastHealthQuery', query);
+                    
+                    // Update the hidden field in the email form
+                    const querySavedInput = document.getElementById('query-saved');
+                    if (querySavedInput) {
+                        querySavedInput.value = query;
+                    }
                 } catch (err) {
                     // Ignore storage errors
                 }
                 
-                // Show thank you section
+                // Hide search section, show thank you with email form
                 messageContainer.classList.add('hidden');
                 thankYouSection.classList.remove('hidden');
             }
         });
     }
     
+    // Skip the email collection and submit just the query to Netlify
+    if (skipEmailBtn) {
+        skipEmailBtn.addEventListener('click', function() {
+            // Get the query from localStorage
+            const query = localStorage.getItem('lastHealthQuery') || '';
+            
+            // Submit the query directly to Netlify
+            fetch('/', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+                body: new URLSearchParams({
+                    'form-name': 'health-query',
+                    'query': query
+                })
+            })
+            .then(() => {
+                // Hide the email form and show success message
+                if (emailForm && emailSuccess) {
+                    emailForm.classList.add('hidden');
+                    document.querySelector('.skip-option').classList.add('hidden');
+                    emailSuccess.classList.remove('hidden');
+                }
+            })
+            .catch(error => console.error('Error submitting form:', error));
+        });
+    }
+    
     // Handle the email form submission
     if (emailForm) {
-        // Try to pre-populate the saved query from localStorage if available
-        try {
-            const savedQuery = localStorage.getItem('lastHealthQuery');
-            const querySavedInput = document.getElementById('query-saved');
-            
-            if (savedQuery && querySavedInput) {
-                querySavedInput.value = savedQuery;
-            }
-        } catch (err) {
-            // Ignore storage errors
-        }
-        
         emailForm.addEventListener('submit', function(e) {
             const emailInput = document.getElementById('email-input');
             
-            if (emailInput && emailInput.value.trim() === '') {
-                e.preventDefault(); // Prevent empty submissions
-            } else if (emailSuccess) {
-                // Show success message
-                emailForm.classList.add('hidden');
-                emailSuccess.classList.remove('hidden');
+            if (emailInput.value.trim() === '') {
+                // If email is empty, just submit the query directly (like skip button)
+                e.preventDefault();
+                skipEmailBtn.click();
             }
+            // Otherwise let the form submit normally to Netlify
         });
     }
     
@@ -65,6 +86,7 @@ document.addEventListener('DOMContentLoaded', function() {
             
             if (emailForm && emailSuccess) {
                 emailForm.classList.add('hidden');
+                document.querySelector('.skip-option').classList.add('hidden');
                 emailSuccess.classList.remove('hidden');
             }
         }
